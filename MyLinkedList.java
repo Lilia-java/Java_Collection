@@ -87,11 +87,35 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     public void clear() {
-        if (size > 0){
-            first=null;
-            last=null;
-            size=0;
+        Node<E> curr = this.first;
+        while (curr != null) {
+            Node<E> nodeForRemove = curr;
+            curr = curr.next;
+            killLink(nodeForRemove);
         }
+        this.size = 0;
+        this.first = null;
+        this.last = null;
+    }
+    private void killLink(Node<E> node) {
+        Node<E> prev = node.prev;
+        Node<E> next = node.next;
+
+        if (prev == null) {
+            this.first = next;
+        } else {
+            prev.next = next;
+            node.prev = null;
+        }
+
+        if (next == null) {
+            this.last = prev;
+        } else {
+            next.prev = prev;
+            node.next = null;
+        }
+        this.size--;
+        node.element = null;
     }
 
     @Override
